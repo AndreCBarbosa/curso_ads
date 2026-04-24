@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive web development</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cascadia+Code:ital,wght@0,200..700;1,200..700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Cascadia Code", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #061144 0%, #000000 100%);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            margin: auto;
+            padding: 40px 0 14vh;
+            color: #65d6ff;
+            text-shadow:
+                0 0 8px rgb(73, 195, 240),
+                0 0 20px rgba(73, 195, 240, 0.3),
+                0 0 40px rgba(73, 195, 240, 0.1);
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            border: solid rgb(0, 102, 255);
+            border-radius: 10px;
+            /* width: 400px; */
+            margin: auto;
+            padding: 80px;
+        }
+
+        .ulLinks {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+
+        }
+
+        a {
+            display: block;
+            text-decoration: none;
+            border: solid;
+            border-radius: 20px;
+            padding: 20px 20px;
+            width: 400px;
+            color: rgb(0, 102, 255);
+
+        }
+
+        a:hover {
+            background-color: rgba(0, 0, 255, 0.075);
+            color: rgb(230, 230, 253);
+            box-shadow: 0 0 60px 0 rgb(15, 15, 255);
+            text-shadow:
+                0 0 8px rgb(73, 195, 240),
+                0 0 20px rgba(73, 195, 240, 0.3),
+                0 0 40px rgba(73, 195, 240, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                padding: 20px 10px 10vh;
+                font-size: 1.5rem;
+            }
+
+            main {
+                padding: 40px 20px;
+                margin: 0 10px;
+            }
+
+            a {
+                width: 90%;
+                max-width: 400px;
+                padding: 15px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Responsive web development</h1>
+
+        <main>
+            <div>
+                <ul class="ulLinks">
+                    <li><a href="./Thor">Animal de estimação</a></li>
+                    <li><a href="./carta">Carta fictícia para Michael Phelps</a></li>
+                    <li><a href="./paginacao">Elemento de paginação</a></li>
+                    <li><a href="./paginacao">Elemento de paginação</a></li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
