@@ -13,6 +13,14 @@ body {
     font-family: Arial;
 }
 
+.back {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    text-decoration: none;
+    color: white
+}
+
 .shape {
     border-radius: 20px;
     padding: 20px;
