@@ -30,15 +30,15 @@ async function getPgVersion() {
 
 getPgVersion();
 
-// app.get('/get_all', async function (req, res) {
-//   try {
-//     const result = await pool.query('SELECT * FROM transacoes');
-//     res.json(result.rows);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Erro ao buscar transacoes' });
-//   }
-// });
+app.get('/get_all', async function (req, res) {
+  try {
+    const result = await pool.query('SELECT * FROM pagamento');
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar transacoes' });
+  }
+});
 
 app.get('/get_total', async function (req, res) {
   try {
@@ -57,6 +57,32 @@ app.get('/get_total', async function (req, res) {
       }
 
       totais[codigo] += valor;
+    });
+
+    res.json(totais);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao buscar informacoes' });
+  }
+});
+
+app.get('/get_per_month', async function (req, res) {
+  try {
+    const result = await pool.query(`
+      SELECT data_do_pagamento, valor_do_pagamento FROM pagamento
+    `);
+
+    var totais = {};
+
+    result.rows.forEach((row) => {
+      const data = String(row.data_do_pagamento).slice(4, 7) + " " + String(row.data_do_pagamento).slice(11, 15);
+      const valor = Number(row.valor_do_pagamento) || 0;
+
+      if (!totais[data]) {
+        totais[data] = 0;
+      }
+
+      totais[data] += valor;
     });
 
     res.json(totais);
