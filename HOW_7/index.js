@@ -32,5 +32,5 @@ async function getPerMonth() {
 // Executar a função
 
 // getAllTransacoes();
-// getTotal();
+getTotal();
 getPerMonth();
