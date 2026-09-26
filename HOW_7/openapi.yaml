@@ -1,0 +1,141 @@
+openapi: 3.0.3
+info:
+  title: API da Imobiliária
+  version: 1.0.0
+  description: >-
+    API para consultar pagamentos e vendas de imóveis. Os percentuais por tipo
+    são calculados sobre a quantidade de vendas distintas em toda a série histórica.
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+paths:
+  /:
+    get:
+      summary: Verifica o funcionamento da API
+      description: Retorna uma mensagem confirmando que a API está funcionando.
+      tags:
+        - Status
+      responses:
+        '200':
+          description: API funcionando
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: API funcionando
+              example:
+                message: API funcionando
+  /get_total:
+    get:
+      summary: Total de pagamentos por imóvel
+      description: Soma os pagamentos de cada imóvel durante toda a série histórica.
+      tags:
+        - Pagamentos
+      responses:
+        '200':
+          description: Totais acumulados, indexados pelo código do imóvel.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: number
+                  format: double
+                example:
+                  '101': 125000.5
+                  '102': 87300
+              example:
+                '101': 125000.5
+                '102': 87300
+        '500':
+          $ref: '#/components/responses/ErroInterno'
+  /get_per_month:
+    get:
+      summary: Total de pagamentos por mês
+      description: Soma os pagamentos de todos os imóveis agrupados por mês e ano.
+      tags:
+        - Pagamentos
+      responses:
+        '200':
+          description: Totais mensais, indexados pela chave de mês e ano retornada pela API.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  type: number
+                  format: double
+                example:
+                  Jan 2025: 25000
+                  Feb 2025: 31750.5
+              example:
+                Jan 2025: 25000
+                Feb 2025: 31750.5
+        '500':
+          $ref: '#/components/responses/ErroInterno'
+  /get_per_type:
+    get:
+      summary: Percentual de vendas por tipo de imóvel
+      description: >-
+        Retorna cada tipo de imóvel cadastrado e seu percentual sobre o total
+        de vendas distintas (id_venda) na série histórica. Cada venda é contada
+        uma vez, independentemente da quantidade de pagamentos associados.
+        Tipos sem vendas retornam percentual zero. O percentual é arredondado
+        para duas casas decimais.
+      tags:
+        - Vendas
+      responses:
+        '200':
+          description: Percentuais por tipo de imóvel.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PercentualPorTipo'
+              example:
+                - tipo_imovel: Apartamento
+                  percentual: 50
+                - tipo_imovel: Casa
+                  percentual: 33.33
+                - tipo_imovel: Terreno
+                  percentual: 16.67
+        '500':
+          $ref: '#/components/responses/ErroInterno'
+components:
+  schemas:
+    PercentualPorTipo:
+      type: object
+      required:
+        - tipo_imovel
+        - percentual
+      properties:
+        tipo_imovel:
+          type: string
+          description: Nome do tipo de imóvel cadastrado.
+          example: Apartamento
+        percentual:
+          type: number
+          format: double
+          minimum: 0
+          maximum: 100
+          description: Percentual das vendas distintas correspondente a este tipo.
+          example: 50
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: Erro ao buscar informacoes
+  responses:
+    ErroInterno:
+      description: Erro ao consultar as informações no banco de dados.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: Erro ao buscar informacoes
